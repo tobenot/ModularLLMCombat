@@ -49,5 +49,8 @@ public class ModularLLMCombat : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
 			);
+		
+		PrivateIncludePaths.AddRange(new string[] { "ModularLLMCombat" });
+		PublicIncludePaths.AddRange(new string[] { "ModularLLMCombat" });
 	}
 }
