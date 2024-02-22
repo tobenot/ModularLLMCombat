@@ -39,8 +39,10 @@ public:
 	/* 上次攻击时间 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AutoAttack")
 	float LastAttackTime;
-
-	//...更多函数和属性
+	
+	/* 攻击伤害 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AutoAttack")
+	float Damage;
     
 	/* 进行攻击的函数 */
 	UFUNCTION(BlueprintCallable, Category = "AutoAttack")

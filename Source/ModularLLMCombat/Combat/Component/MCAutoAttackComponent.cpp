@@ -15,6 +15,7 @@ UMCAutoAttackComponent::UMCAutoAttackComponent()
 	// 默认值
 	AttackRange = 500.f; // 攻击范围，单位为厘米
 	AttackInterval = 2.f; // 攻击间隔，单位为秒
+	Damage = 10.f;
 	LastAttackTime = -AttackInterval; // 以便于游戏开始时就可以攻击
 
 	DetectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("DetectionSphere"));
@@ -22,6 +23,7 @@ UMCAutoAttackComponent::UMCAutoAttackComponent()
 	DetectionSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	DetectionSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
 	DetectionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	DetectionSphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	DetectionSphere->SetHiddenInGame(false);
 }
 
@@ -53,7 +55,7 @@ void UMCAutoAttackComponent::PerformAttack(AActor* EnemyActor)
 	if(EnemyAttributeComp)
 	{
 		// AddHealth负数来对敌人造成伤害
-		EnemyAttributeComp->AddHealth(-10); // 假设攻击伤害值为10
+		EnemyAttributeComp->AddHealth(-Damage); // 假设攻击伤害值为10
 	}
 
 	LastAttackTime = GetWorld()->GetTimeSeconds();
@@ -64,17 +66,25 @@ void UMCAutoAttackComponent::CheckForEnemies()
 	TArray<AActor*> OverlappingActors;
 	DetectionSphere->GetOverlappingActors(OverlappingActors);
 	const UMCAttributeComponent* MyAttributeComp = Cast<UMCAttributeComponent>(GetOwner()->GetComponentByClass(UMCAttributeComponent::StaticClass()));
-	if(MyAttributeComp)
+    
+	if (MyAttributeComp)
 	{
-		for(AActor* Actor : OverlappingActors)
+		float AttackDistance = DetectionSphere->GetScaledSphereRadius(); // Use the scaled sphere radius as the attack distance
+
+		for (AActor* Actor : OverlappingActors)
 		{
 			const UMCAttributeComponent* AttributeComp = Cast<UMCAttributeComponent>(Actor->GetComponentByClass(UMCAttributeComponent::StaticClass()));
-			if(AttributeComp &&
+            
+			if (AttributeComp &&
 				((AttributeComp->GetFaction() == EMCFaction::Hostile && MyAttributeComp->GetFaction() == EMCFaction::Friendly)
 				|| (AttributeComp->GetFaction() == EMCFaction::Friendly && MyAttributeComp->GetFaction() == EMCFaction::Hostile)))
 			{
-				PerformAttack(Actor);
-				break; //一次只攻击一个敌人
+				// Check if the distance between the two actors is within the attack distance
+				if (FVector::Dist(GetOwner()->GetActorLocation(), Actor->GetActorLocation()) <= AttackDistance)
+				{
+					PerformAttack(Actor);
+					break; // Attack only one enemy at a time
+				}
 			}
 		}
 	}
