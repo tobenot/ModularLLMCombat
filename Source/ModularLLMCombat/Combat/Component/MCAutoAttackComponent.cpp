@@ -26,6 +26,8 @@ UMCAutoAttackComponent::UMCAutoAttackComponent()
 	DetectionSphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	DetectionSphere->SetHiddenInGame(false);
 	DetectionSphere->ShapeColor = FColor::White;
+
+	bCloseToEnemy = false;
 }
 
 void UMCAutoAttackComponent::BeginPlay()
@@ -67,7 +69,8 @@ void UMCAutoAttackComponent::CheckForEnemies()
 	TArray<AActor*> OverlappingActors;
 	DetectionSphere->GetOverlappingActors(OverlappingActors);
 	const UMCAttributeComponent* MyAttributeComp = Cast<UMCAttributeComponent>(GetOwner()->GetComponentByClass(UMCAttributeComponent::StaticClass()));
-    
+
+	bool bCheckEnemy = false;
 	if (MyAttributeComp)
 	{
 		if(MyAttributeComp->IsDead())
@@ -87,10 +90,15 @@ void UMCAutoAttackComponent::CheckForEnemies()
 				// Check if the distance between the two actors is within the attack distance
 				if (FVector::Dist(GetOwner()->GetActorLocation(), Actor->GetActorLocation()) <= AttackDistance)
 				{
+					bCheckEnemy = true;
 					PerformAttack(Actor);
 					break; // Attack only one enemy at a time
 				}
 			}
 		}
+	}
+	if(bCheckEnemy != bCloseToEnemy)
+	{
+		bCloseToEnemy = bCheckEnemy;
 	}
 }

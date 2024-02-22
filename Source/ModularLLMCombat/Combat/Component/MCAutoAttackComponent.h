@@ -51,4 +51,6 @@ public:
 	/* 检查范围内的敌人 */
 	UFUNCTION(BlueprintCallable, Category = "AutoAttack")
 	void CheckForEnemies();
+
+	bool bCloseToEnemy = false;
 };
