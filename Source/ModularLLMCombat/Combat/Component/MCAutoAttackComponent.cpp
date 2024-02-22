@@ -25,6 +25,7 @@ UMCAutoAttackComponent::UMCAutoAttackComponent()
 	DetectionSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	DetectionSphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	DetectionSphere->SetHiddenInGame(false);
+	DetectionSphere->ShapeColor = FColor::White;
 }
 
 void UMCAutoAttackComponent::BeginPlay()
@@ -69,6 +70,10 @@ void UMCAutoAttackComponent::CheckForEnemies()
     
 	if (MyAttributeComp)
 	{
+		if(MyAttributeComp->IsDead())
+		{
+			return;
+		}
 		float AttackDistance = DetectionSphere->GetScaledSphereRadius(); // Use the scaled sphere radius as the attack distance
 
 		for (AActor* Actor : OverlappingActors)

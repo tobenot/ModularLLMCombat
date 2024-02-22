@@ -53,9 +53,12 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnDeathSignature OnDeath;
 	
+	UFUNCTION(Blueprintable)
+	bool IsDead() const{return bIsDead;}
+	
 protected:
 	/* 角色的属性值 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes", ReplicatedUsing = OnRep_Health)
 	float Health;
 	
 	/* 角色的属性值 */
@@ -69,7 +72,7 @@ protected:
 	/* 角色是否已死 */
 	UPROPERTY(Transient, ReplicatedUsing = OnRep_IsDead)
 	bool bIsDead;
-
+	
 	UFUNCTION()
 	void OnRep_Health();
 	
@@ -79,7 +82,7 @@ protected:
 	
 	/* 网络复制：复制属性和阵营状态到客户端 */
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
-	
+
 private:
 	float LastHealth;
 	bool LastHealthRecorded = false;
