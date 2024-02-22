@@ -14,8 +14,8 @@ UMCAutoAttackComponent::UMCAutoAttackComponent()
 
 	// 默认值
 	AttackRange = 500.f; // 攻击范围，单位为厘米
-	AttackInterval = 2.f; // 攻击间隔，单位为秒
-	Damage = 10.f;
+	AttackInterval = 0.5f; // 攻击间隔，单位为秒
+	Damage = 5.f;
 	LastAttackTime = -AttackInterval; // 以便于游戏开始时就可以攻击
 
 	DetectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("DetectionSphere"));
@@ -56,7 +56,7 @@ void UMCAutoAttackComponent::PerformAttack(AActor* EnemyActor)
 	if(EnemyAttributeComp)
 	{
 		// AddHealth负数来对敌人造成伤害
-		EnemyAttributeComp->AddHealth(-Damage); // 假设攻击伤害值为10
+		EnemyAttributeComp->AddHealth(-Damage);
 	}
 
 	LastAttackTime = GetWorld()->GetTimeSeconds();
