@@ -6,6 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "MCAttributeComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnHealthChangedSignature, UMCAttributeComponent*, AttributeComp, float, NewHealth, float, Delta);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathSignature, UMCAttributeComponent*, AttributeComp);
+
 /* 定义阵营的枚举 */
 UENUM(BlueprintType)
 enum class EMCFaction : uint8
@@ -42,15 +45,42 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Faction")
 	EMCFaction GetFaction() const;
 
+	/* 血量变化多播 */
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnHealthChangedSignature OnHealthChanged;
+
+	/* 死亡多播 */
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnDeathSignature OnDeath;
+	
 protected:
 	/* 角色的属性值 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
 	float Health;
-
+	
+	/* 角色的属性值 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
+	float MaxHealth;
+	
 	/* 角色的阵营 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Faction")
 	EMCFaction Faction;
+
+	/* 角色是否已死 */
+	UPROPERTY(Transient, ReplicatedUsing = OnRep_IsDead)
+	bool bIsDead;
+
+	UFUNCTION()
+	void OnRep_Health();
+	
+	/* 当bIsDead变化时调用来同步客户端状态 */
+	UFUNCTION()
+	void OnRep_IsDead();
 	
 	/* 网络复制：复制属性和阵营状态到客户端 */
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
+	
+private:
+	float LastHealth;
+	bool LastHealthRecorded = false;
 };
