@@ -10,7 +10,7 @@ class UMCInventoryComponent;
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class MODULARLLMCOMBAT_API UMCAbilityBase : public UObject
 {
 	GENERATED_BODY()
@@ -18,6 +18,7 @@ class MODULARLLMCOMBAT_API UMCAbilityBase : public UObject
 public:
 	UFUNCTION(Server, Reliable, WithValidation)
 	virtual void Use();
+	
 public:
 	UFUNCTION(BlueprintCallable, Category = "Ability")
 	FString GetAbilityName() const;
