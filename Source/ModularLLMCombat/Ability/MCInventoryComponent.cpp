@@ -9,6 +9,7 @@ UMCInventoryComponent::UMCInventoryComponent()
 {
     // 设置此组件可以被复制
     SetIsReplicatedByDefault(true);
+    AbilitySlots.Init(nullptr, MaxSlotLimit);
 }
 
 void UMCInventoryComponent::AddAbility(UMCAbilityBase* Ability)
@@ -23,10 +24,11 @@ void UMCInventoryComponent::AddAbility(UMCAbilityBase* Ability)
         // 尝试先放入空闲的物品栏
         for (int32 SlotIndex = 0; SlotIndex < MaxSlotLimit; ++SlotIndex)
         {
-            // 如果index有效并且当前栏位为空，则放入栏位
-            if (AbilitySlots.IsValidIndex(SlotIndex) && AbilitySlots[SlotIndex] == nullptr)
+            // 如果当前栏位为空，则放入栏位
+            if (AbilitySlots[SlotIndex] == nullptr)
             {
                 AbilitySlots[SlotIndex] = Ability;
+                break;
             }
         }
             
