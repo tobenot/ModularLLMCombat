@@ -26,5 +26,5 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "CO|Debug")
-	static void TestAddClearMonstersItem(const UObject* Outer, FString Name, float Radius);
+	static void TestAddClearMonstersItem(UObject* Outer, FString Name, float Radius);
 };

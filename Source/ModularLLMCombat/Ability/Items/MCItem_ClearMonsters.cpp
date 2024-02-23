@@ -55,7 +55,7 @@ void UMCItem_ClearMonsters::ClearMonster(FVector Location, float Radius)
 	}
 }
 
-void UMCItem_ClearMonsters::TestAddClearMonstersItem(const UObject* Outer, FString Name, float Radius)
+void UMCItem_ClearMonsters::TestAddClearMonstersItem(UObject* Outer, FString Name, float Radius)
 {
 #if !UE_BUILD_SHIPPING
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(Outer->GetWorld(), 0);
@@ -65,7 +65,7 @@ void UMCItem_ClearMonsters::TestAddClearMonstersItem(const UObject* Outer, FStri
 		if(PlayerInventoryComponent)
 		{
 			// 创建UMCItem_ClearMonsters实例，设置清除半径和名称
-			UMCItem_ClearMonsters* NewClearMonsterItem = NewObject<UMCItem_ClearMonsters>();
+			UMCItem_ClearMonsters* NewClearMonsterItem = NewObject<UMCItem_ClearMonsters>(Outer);
 			NewClearMonsterItem->SetAbilityName(Name);
 			NewClearMonsterItem->SetQuantity(1);
 			NewClearMonsterItem->ClearRadius = Radius * 100;
