@@ -12,13 +12,13 @@
 
 void UMCItem_ClearMonsters::Use_Implementation()
 {
-	Super::Use_Implementation();
 	if (BelongInventoryComponent->GetOwner()->HasAuthority())
 	{
 		FVector PlayerLocation = BelongInventoryComponent->GetOwner()->GetActorLocation(); // 假设使用者的位置就是玩家当前位置
 		// 如果我们已经在服务器上了，就直接执行清理逻辑
 		ClearMonster(PlayerLocation, ClearRadius);
 	}
+	Super::Use_Implementation();
 }
 
 void UMCItem_ClearMonsters::ClearMonster(FVector Location, float Radius)

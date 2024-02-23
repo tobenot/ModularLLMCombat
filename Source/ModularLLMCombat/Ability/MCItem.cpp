@@ -2,11 +2,24 @@
 
 
 #include "MCItem.h"
+#include "Ability/MCInventoryComponent.h"
 
 void UMCItem::Use_Implementation()
 {
-	// 物品使用的逻辑代码
-	--Quantity;
+	// 假设调用Use表示使用了一个单位的物品
+	if(Quantity > 0)
+	{
+		--Quantity;
+        
+		// 如果物品使用后数量为0，则从背包移除该物品
+		if(Quantity == 0)
+		{
+			if(BelongInventoryComponent)
+			{
+				BelongInventoryComponent->RemoveAbility(this);
+			}
+		}
+	}
 }
 
 bool UMCItem::Use_Validate()

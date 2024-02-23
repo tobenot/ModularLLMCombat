@@ -106,6 +106,34 @@ UMCAbilityBase* UMCInventoryComponent::GetAbilityFromSlot(int32 SlotIndex) const
     return nullptr;
 }
 
+void UMCInventoryComponent::RemoveAbility(UMCAbilityBase* Ability)
+{
+    if (!Ability) return;
+    
+    // 从背包能力列表中移除
+    Abilities.RemoveSingle(Ability);
+    // 从物品栏中移除
+    for(int32 SlotIndex = 0; SlotIndex < AbilitySlots.Num(); SlotIndex++)
+    {
+        if(AbilitySlots[SlotIndex] == Ability)
+        {
+            AbilitySlots[SlotIndex] = nullptr;
+            break; // 找到匹配项后退出循环
+        }
+    }
+    
+    // 如果是服务器，通知客户端更新
+    if(GetOwnerRole() == ROLE_Authority)
+    {
+        // 更新客户端代码，这里可以根据实际需求来具体实现
+        // 比如通过调用客户端的RPC函数来处理
+        // ...
+    }
+
+    // 销毁物品对象
+    Ability->ConditionalBeginDestroy();
+}
+
 // 用来告诉引擎如何复制这些属性
 void UMCInventoryComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {

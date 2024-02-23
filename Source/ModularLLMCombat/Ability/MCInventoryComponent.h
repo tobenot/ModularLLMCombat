@@ -34,7 +34,10 @@ public:
 	// 获取指定物品栏位置的能力
 	UFUNCTION(BlueprintCallable, Category = "InventoryComponent")
 	UMCAbilityBase* GetAbilityFromSlot(int32 SlotIndex) const;
-
+	
+	UFUNCTION(BlueprintCallable, Category = "InventoryComponent")
+	void RemoveAbility(UMCAbilityBase* Ability);
+	
 	// 消耗或者使用能力
 	UFUNCTION(BlueprintCallable, Category = "InventoryComponent")
 	void ConsumeAbility(UMCAbilityBase* Ability);
