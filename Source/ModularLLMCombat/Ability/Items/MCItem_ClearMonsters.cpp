@@ -54,3 +54,27 @@ void UMCItem_ClearMonsters::ClearMonster(FVector Location, float Radius)
 		}
 	}
 }
+
+void UMCItem_ClearMonsters::TestAddClearMonstersItem(const UObject* Outer, FString Name, float Radius)
+{
+#if !UE_BUILD_SHIPPING
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(Outer->GetWorld(), 0);
+	if(PlayerPawn)
+	{
+		UMCInventoryComponent* PlayerInventoryComponent = PlayerPawn->FindComponentByClass<UMCInventoryComponent>();
+		if(PlayerInventoryComponent)
+		{
+			// 创建UMCItem_ClearMonsters实例，设置清除半径和名称
+			UMCItem_ClearMonsters* NewClearMonsterItem = NewObject<UMCItem_ClearMonsters>();
+			NewClearMonsterItem->SetAbilityName(Name);
+			NewClearMonsterItem->ClearRadius = Radius * 100;
+            
+			// 将该道具添加到玩家的背包中
+			PlayerInventoryComponent->AddAbility(NewClearMonsterItem);
+		}else
+		{
+			UE_LOG(LogTemp, Error, TEXT("玩家身上没有 UMCInventoryComponent"));
+		}
+	}
+#endif
+}

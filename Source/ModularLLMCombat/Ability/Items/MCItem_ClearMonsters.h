@@ -13,6 +13,7 @@ class MODULARLLMCOMBAT_API UMCItem_ClearMonsters : public UMCItem
 	GENERATED_BODY()
 	
 public:
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	float ClearRadius = 1000.0f; // 清除半径单位范围的怪物
 	
 public:
@@ -21,4 +22,9 @@ public:
 protected:
 	// 在服务端执行使用物品的逻辑
 	void ClearMonster(FVector Location, float Radius);
+
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "CO|Debug")
+	static void TestAddClearMonstersItem(const UObject* Outer, FString Name, float Radius);
 };
