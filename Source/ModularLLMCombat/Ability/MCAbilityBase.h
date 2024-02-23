@@ -19,7 +19,9 @@ public:
 	UFUNCTION(Server, Reliable, WithValidation)
 	virtual void Use();
 public:
+	UFUNCTION(BlueprintCallable, Category = "Ability")
 	FString GetAbilityName() const;
+	UFUNCTION(BlueprintCallable, Category = "Ability")
 	void SetAbilityName(const FString& AbilityName);
 
 public:
