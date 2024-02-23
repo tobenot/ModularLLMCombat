@@ -57,7 +57,7 @@ void UMCItem_ClearMonsters::ClearMonster(FVector Location, float Radius)
 
 void UMCItem_ClearMonsters::TestAddClearMonstersItem(UObject* Outer, FString Name, float Radius)
 {
-#if !UE_BUILD_SHIPPING
+//#if !UE_BUILD_SHIPPING
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(Outer->GetWorld(), 0);
 	if(PlayerPawn)
 	{
@@ -77,5 +77,5 @@ void UMCItem_ClearMonsters::TestAddClearMonstersItem(UObject* Outer, FString Nam
 			UE_LOG(LogTemp, Error, TEXT("玩家身上没有 UMCInventoryComponent"));
 		}
 	}
-#endif
+//#endif
 }
