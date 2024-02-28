@@ -48,6 +48,11 @@ void UMCAutoAttackComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 		{
 			CheckForEnemies();
 		}
+
+		if(DetectionSphere && bHideSphere != DetectionSphere->bHiddenInGame)
+		{
+			DetectionSphere->SetHiddenInGame(bHideSphere);
+		}
 	}
 }
 

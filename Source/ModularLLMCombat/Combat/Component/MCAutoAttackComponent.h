@@ -53,4 +53,7 @@ public:
 	void CheckForEnemies();
 
 	bool bCloseToEnemy = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AutoAttack")
+	bool bHideSphere = false;
 };
