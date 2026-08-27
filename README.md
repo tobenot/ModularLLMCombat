@@ -1,5 +1,8 @@
 # ModularLLMCombat
 
+> **暂停维护.**  
+> 本插件目前没有持续更新。对应 Steam 游戏后续可能会翻新，仓库保留，不是废弃。
+
 A combat system plugin that combines large language models with modular skill design.
 
 ## Features:
